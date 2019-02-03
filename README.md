@@ -1,0 +1,2 @@
+# cs441-project2
+We've probably all played a version of 2048. Slide tiles left, right, up, down, and tiles with the same number beside each other merge (2+2 = 4, and so on). When the tiles slide, a new tile drops into an open spot. You keep playing until you get to 2048, or you can't drop in a new tile. Use either iOS or Android; you can keep things very simple if you want (just 16 text widgets on the screen, and buttons for the four different directions), or you can go more complex.
