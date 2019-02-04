@@ -7,12 +7,217 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
+        android:textColorHighlight="@android:color/holo_orange_dark"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.105"
+        tools:text="2048 Rush" />
+
+    <TableLayout
+        android:id="@+id/game_grid"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginRight="5dp"
+        android:maxWidth="360dp"
+        android:maxHeight="360dp"
+        android:minWidth="360dp"
+        android:minHeight="360dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:id="@+id/r1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/box_11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="TextView"
+                tools:layout_editor_absoluteX="139dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="TextView"
+                tools:layout_editor_absoluteX="319dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="TextView"
+                tools:layout_editor_absoluteX="228dp"
+                tools:layout_editor_absoluteY="199dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/r2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/box_21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/r3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/box_31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/r4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/box_41"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_42"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_43"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+
+            <TextView
+                android:id="@+id/box_44"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:height="90dp"
+                android:text="Textview"
+                tools:layout_editor_absoluteX="44dp"
+                tools:layout_editor_absoluteY="199dp" />
+        </TableRow>
+    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>
