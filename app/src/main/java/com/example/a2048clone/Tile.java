@@ -19,7 +19,7 @@ public class Tile {
     }
 
     //2 tiles can't combine if: 1) they have different values, 2)The tile is moved against its combining condition
-    public boolean canCombine(directions dir, Tile other){
+    public boolean canCombine(Tile other, directions dir){
         if(other.getValue().compareTo(value)!=0)
             return false;
         else if(dir == directions.DOWN || dir == directions.UP && condition == conditions.LEFTRIGHT)
