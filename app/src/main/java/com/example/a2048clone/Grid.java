@@ -1,6 +1,7 @@
 package com.example.a2048clone;
 
 import java.lang.Math;
+import java.util.ArrayList;
 
 public class Grid {
     private Tile[][] grid = new Tile[4][4];
@@ -36,11 +37,18 @@ public class Grid {
             return true;
     }
 
-    private void collide(Tile t1, Tile t2, Tile.directions d){ //T1 collides into T2
-        if(t1.canCombine(t2,d))
-            combine(t1,t2);
-        else{//move toCollideWIth
+    public void move(Tile.directions dir){//sets up arrays and passes them to collide method. Like how we discussed in class
+        ArrayList<Tile> line = new ArrayList<Tile>(); // Maybe make arraylist instead DONE
+    }
 
+    private void collide(ArrayList<Tile> tiles, Tile.directions d){ //T1 collides into T2
+        for(int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i).canCombine(tiles.get(i + 1), d)){
+                combine(tiles.get(i), tiles.get(i+1));
+                tiles.set(i+1,null);
+            } else {
+
+            }
         }
     }
 
@@ -55,6 +63,7 @@ public class Grid {
         else
             condition= Tile.conditions.NONE;
         grid[x][y] = new Tile(Integer.toString(newVal), x, y, condition);
+        grid[t1.getX()][t1.getY()] = null;
 
     }
 
