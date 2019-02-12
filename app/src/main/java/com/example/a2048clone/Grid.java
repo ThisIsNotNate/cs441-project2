@@ -31,24 +31,60 @@ public class Grid {
                         ***Need to handle setting toCollideWith if tiles combine
      */
     private boolean alreadyTile(int x, int y){
-        if(grid[x][y] == null)
-            return false;
-        else
-            return true;
+        return grid[x][y] != null;
     }
 
     public void move(Tile.directions dir){//sets up arrays and passes them to collide method. Like how we discussed in class
-        ArrayList<Tile> line = new ArrayList<Tile>(); // Maybe make arraylist instead DONE
+        ArrayList<Tile> line = new ArrayList<Tile>();
+        int i,j;
+        for(i = 0; i < grid.length; i++){
+            for(j = 0; j < grid[i].length; j++) {
+                if (dir == Tile.directions.LEFT && grid[i][j] != null)
+                    line.add(grid[i][j]);
+                else if(dir == Tile.directions.DOWN && grid[(j-3)*-1][i] != null)
+                    line.add(grid[(j-3)*-1][i]);
+                else if(dir == Tile.directions.RIGHT && grid[i][(j-3)*-1] != null)//adds values from right to left
+                    line.add(grid[i][(j-3)*-1]);
+                else if(dir == Tile.directions.UP && grid[j][i] != null)//adds values from bottom to top
+                    line.add( grid[j][i]);
+            }
+            collide(line, dir, j);
+            line.clear();
+        }
+
+        newTile();
     }
 
-    private void collide(ArrayList<Tile> tiles, Tile.directions d){ //T1 collides into T2
-        for(int i = 0; i < tiles.size(); i++) {
-            if (tiles.get(i).canCombine(tiles.get(i + 1), d)){
+    private void collide(ArrayList<Tile> tiles, Tile.directions dir, int pos){ //T1 collides into T2
+        for(int i = 0; i < tiles.size()-1; i++) {
+            if (tiles.get(i) != null && tiles.get(i).canCombine(tiles.get(i + 1), dir)){
                 combine(tiles.get(i), tiles.get(i+1));
                 tiles.set(i+1,null);
-            } else {
-
             }
+        }
+        int offset = 0;
+        for(int i = 0; i < tiles.size(); i++){//Shifts tiles to the direction side of the screen
+            if(tiles.get(i) == null)
+                offset++;
+            else if (dir == Tile.directions.LEFT)
+                grid[pos][i-offset] = tiles.get(i);
+            else if(dir == Tile.directions.DOWN)
+                grid[3-i+offset][pos] = tiles.get(i);
+            else if(dir == Tile.directions.RIGHT)//adds values from right to left
+                grid[pos][3-i+offset] = tiles.get(i);
+            else if(dir == Tile.directions.UP)//adds values from bottom to top
+                grid[i+offset][pos] = tiles.get(i);
+        }
+
+        for(int i = 0; i < tiles.size()-offset; i++){// fills in rest of grid with null tiles
+            if(dir == Tile.directions.LEFT)
+                grid[pos][3-i] = null;
+            else if(dir == Tile.directions.DOWN)
+                grid[i][pos] = null;
+            else if(dir == Tile.directions.RIGHT)
+                grid[pos][i] = null;
+            else if(dir == Tile.directions.UP)
+                grid[3-i][pos] = null;
         }
     }
 
@@ -65,6 +101,7 @@ public class Grid {
         grid[x][y] = new Tile(Integer.toString(newVal), x, y, condition);
         grid[t1.getX()][t1.getY()] = null;
 
+        score += newVal;
     }
 
     public void newTile() {
