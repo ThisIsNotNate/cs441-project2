@@ -4,7 +4,7 @@ import java.lang.Math;
 import java.util.ArrayList;
 
 public class Grid {
-    private Tile[][] grid = new Tile[4][4];
+    public Tile[][] grid = new Tile[4][4];
     private int score;
 
     public Grid(){
@@ -102,6 +102,19 @@ public class Grid {
         grid[t1.getX()][t1.getY()] = null;
 
         score += newVal;
+    }
+
+    public int[][] getGrid(){
+        int[][] vals = new int[4][4];
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++){
+                if(grid[i][j]==null)
+                    vals[i][j]=-1;
+                else
+                    vals[i][j] = Integer.parseInt(grid[i][j].getValue());
+            }
+        }
+        return vals;
     }
 
     public void newTile() {
