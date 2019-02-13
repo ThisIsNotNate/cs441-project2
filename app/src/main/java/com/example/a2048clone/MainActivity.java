@@ -2,6 +2,8 @@ package com.example.a2048clone;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,11 +41,22 @@ public class MainActivity extends AppCompatActivity {
         //game = new Grid(); //Doesn't like this either I guess
         //updateGrid(); //Kills Everything when right here. Don't do it
         grid[1][2].setText("Oi");
-        initGame();//breaks it too. Can't do it this way
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                runThread();
+            }
+        });
     }
 
-    public void initGame(){
-        game = new Grid();
+    public void runThread(){
+        runOnUiThread(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                grid[0][0].setText("updated");
+            }
+        }));
     }
 
     public void updateGrid(){
