@@ -1,2 +1,9 @@
-# cs441-project2
-We've probably all played a version of 2048. Slide tiles left, right, up, down, and tiles with the same number beside each other merge (2+2 = 4, and so on). When the tiles slide, a new tile drops into an open spot. You keep playing until you get to 2048, or you can't drop in a new tile. Use either iOS or Android; you can keep things very simple if you want (just 16 text widgets on the screen, and buttons for the four different directions), or you can go more complex.
+# Simply 2048
+You ever try to 2048, but hate the ads and all of the unnecessary detail that may be slowing down your game?
+Do you hate having to swipe and smudge your screen while playing 2048?
+
+Well look no further! Simply 2048 is here!  
+
+Simply 2048 is a simple version of the classic game 2048. No color, no problem! We're keeping it nice and simple, just for you, the player.
+
+Simply 2048 plays just the same as the normal game, excpet for a few hidden features.
