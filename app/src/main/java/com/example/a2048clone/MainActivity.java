@@ -7,9 +7,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+   //private final ThreadLocal<Grid> game = new ThreadLocal<Grid>();
     private Grid game;
     private int[][] values;
     private TextView[][] grid;
+    private TextView gameScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,42 +40,81 @@ public class MainActivity extends AppCompatActivity {
         grid[3][2] = findViewById(R.id.box_43);
         grid[3][3] = findViewById(R.id.box_44);
 
-        //game = new Grid(); //Doesn't like this either I guess
-        //updateGrid(); //Kills Everything when right here. Don't do it
-        grid[1][2].setText("Oi");
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        gameScore = findViewById(R.id.score);
+
+        game = new Grid(); //Doesn't like this either I guess
+        updateGrid();
+
+        Button buttonUp = findViewById(R.id.buttonUP);
+        buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                runThread();
+                game.move(Tile.directions.UP);
+                updateGrid();
+            }
+        });
+
+        Button buttonRight = findViewById(R.id.buttonRIGHT);
+        buttonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.move(Tile.directions.RIGHT);
+                updateGrid();
+            }
+        });
+
+        Button buttonLeft = findViewById(R.id.buttonLEFT);
+        buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.move(Tile.directions.LEFT);
+                updateGrid();
+            }
+        });
+
+        Button buttonDown = findViewById(R.id.buttonDOWN);
+        buttonDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.move(Tile.directions.DOWN);
+                updateGrid();
+            }
+        });
+
+        Button buttonReset = findViewById(R.id.buttonRESET);
+        buttonReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.reset();
+
+                updateGrid();
             }
         });
     }
 
-    public void runThread(){
+
+
+    public void updateGrid(){
         runOnUiThread(new Thread(new Runnable() {
             @Override
             public void run() {
-                grid[0][0].setText("updated");
+                values = game.getGrid();
+                String tileText;
+
+                for (int i = 0; i < grid.length; i++)
+                    for (int j = 0; j < grid.length; j++) {
+                        tileText = "";
+                        if (values[i][j] != -1)
+                            tileText += values[i][j];
+                        if(game.grid[i][j] != null && game.grid[i][j].getCondition() == Tile.conditions.UPDOWN)
+                            tileText+=" UD";
+                        else if(game.grid[i][j] != null && game.grid[i][j].getCondition() == Tile.conditions.LEFTRIGHT)
+                            tileText+=" LR";
+                        grid[i][j].setText(tileText);
+                    }
+                String score = "Score: " + Integer.toString(game.getScore());
+                gameScore.setText(score);
             }
         }));
-    }
-
-    public void updateGrid(){
-        values = game.getGrid();
-        String tileText = "";
-
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid.length; j++){
-                tileText = "";
-                if(values[i][j] != -1)
-                    tileText += values[i][j];
-//                if(game.grid[i][j].getCondition() == Tile.conditions.UPDOWN)
-//                    tileText+="↕";
-//                else if(game.grid[i][j].getCondition() == Tile.conditions.LEFTRIGHT)
-//                    tileText+="\u2B64";
-                grid[i][j].setText(tileText);
-            }
-        }
     }
 }

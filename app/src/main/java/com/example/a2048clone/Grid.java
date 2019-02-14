@@ -1,5 +1,7 @@
 package com.example.a2048clone;
 
+import android.util.Log;
+
 import java.lang.Math;
 import java.util.ArrayList;
 
@@ -8,6 +10,7 @@ public class Grid {
     private int score;
 
     public Grid(){
+
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[i].length;j++){
                 grid[i][j]=null;
@@ -15,7 +18,7 @@ public class Grid {
         }
 
         newTile();
-
+        newTile();
         score = 0;
     }
 
@@ -31,77 +34,117 @@ public class Grid {
                         ***Need to handle setting toCollideWith if tiles combine
      */
     private boolean alreadyTile(int x, int y){
-        return grid[x][y] != null;
+        return grid[x][y] == null;
     }
 
     public void move(Tile.directions dir){//sets up arrays and passes them to collide method. Like how we discussed in class
-        ArrayList<Tile> line = new ArrayList<Tile>();
+        ArrayList<Tile> line = new ArrayList<>();
         int i,j;
-        for(i = 0; i < grid.length; i++){
-            for(j = 0; j < grid[i].length; j++) {
-                if (dir == Tile.directions.LEFT && grid[i][j] != null)
-                    line.add(grid[i][j]);
-                else if(dir == Tile.directions.DOWN && grid[(j-3)*-1][i] != null)
-                    line.add(grid[(j-3)*-1][i]);
-                else if(dir == Tile.directions.RIGHT && grid[i][(j-3)*-1] != null)//adds values from right to left
-                    line.add(grid[i][(j-3)*-1]);
-                else if(dir == Tile.directions.UP && grid[j][i] != null)//adds values from bottom to top
-                    line.add( grid[j][i]);
+        Tile[][] cpy = grid;
+
+        if(dir == Tile.directions.LEFT||dir == Tile.directions.UP){
+            for(i = 0; i < grid.length; i++) {
+                for (j = 0; j < grid[i].length; j++) {
+                    if (dir == Tile.directions.LEFT && grid[i][j] != null)
+                        line.add(grid[i][j]);
+                    else if(dir == Tile.directions.UP && grid[j][i] != null)//adds values from bottom to top
+                        line.add( grid[j][i]);
+                }
+                collide(line, dir, i);
+                line.clear();
             }
-            collide(line, dir, j);
-            line.clear();
         }
+        else if(dir == Tile.directions.RIGHT||dir == Tile.directions.DOWN){
+            for(i = grid.length-1; i >= 0; i--){
+                for(j = grid[i].length-1; j >=0; j--) {
+                    if (dir == Tile.directions.RIGHT && grid[i][j] != null)
+                        line.add(grid[i][j]);
+                    else if(dir == Tile.directions.DOWN && grid[j][i] != null)//adds values from bottom to top
+                        line.add( grid[j][i]);
+                }
+                collide(line, dir, i);
+                line.clear();
+            }
+        }
+
 
         newTile();
     }
 
     private void collide(ArrayList<Tile> tiles, Tile.directions dir, int pos){ //T1 collides into T2
-        for(int i = 0; i < tiles.size()-1; i++) {
-            if (tiles.get(i) != null && tiles.get(i).canCombine(tiles.get(i + 1), dir)){
-                combine(tiles.get(i), tiles.get(i+1));
-                tiles.set(i+1,null);
+        ArrayList<Tile> line = combine(tiles, dir);
+        Log.i("Collide", "collapsed line size: " + line.size());
+        int i;
+
+        if(dir == Tile.directions.LEFT) {
+            for (i = 0; i < grid.length; i++) {
+                if(i < line.size())
+                    grid[pos][i] = line.get(i);
+                else
+                    grid[pos][i] = null;
             }
         }
-        int offset = 0;
-        for(int i = 0; i < tiles.size(); i++){//Shifts tiles to the direction side of the screen
-            if(tiles.get(i) == null)
-                offset++;
-            else if (dir == Tile.directions.LEFT)
-                grid[pos][i-offset] = tiles.get(i);
-            else if(dir == Tile.directions.DOWN)
-                grid[3-i+offset][pos] = tiles.get(i);
-            else if(dir == Tile.directions.RIGHT)//adds values from right to left
-                grid[pos][3-i+offset] = tiles.get(i);
-            else if(dir == Tile.directions.UP)//adds values from bottom to top
-                grid[i+offset][pos] = tiles.get(i);
+        else if(dir == Tile.directions.UP) {
+            for (i = 0; i < grid.length; i++) {
+                if(i < line.size())
+                    grid[i][pos] = line.get(i);
+                else
+                    grid[i][pos] = null;
+            }
         }
-
-        for(int i = 0; i < tiles.size()-offset; i++){// fills in rest of grid with null tiles
-            if(dir == Tile.directions.LEFT)
-                grid[pos][3-i] = null;
-            else if(dir == Tile.directions.DOWN)
-                grid[i][pos] = null;
-            else if(dir == Tile.directions.RIGHT)
-                grid[pos][i] = null;
-            else if(dir == Tile.directions.UP)
-                grid[3-i][pos] = null;
+        else if(dir == Tile.directions.RIGHT) {
+            for (i = 0; i < grid.length; i++) {
+                if(i < line.size())
+                    grid[pos][3-i] = line.get(i);
+                else
+                    grid[pos][3-i] = null;
+            }
+        }
+        else if(dir == Tile.directions.DOWN) {
+            for (i = 0; i < grid.length; i++) {
+                if(i < line.size())
+                    grid[3-i][pos] = line.get(i);
+                else
+                    grid[3-i][pos] = null;
+            }
         }
     }
 
-    private void combine(Tile t1, Tile t2){//T1 collides into T2
-        int newVal = Integer.parseInt(t1.getValue())*2;
-        int x = t2.getX();
-        int y = t2.getY();
+    private ArrayList<Tile> combine(ArrayList<Tile> tiles, Tile.directions dir){//T1 collides into T2
+        if(tiles.size()==1) return tiles;
 
+        ArrayList<Tile> newTiles = new ArrayList<>();
+        Tile t1, t2=null;
+        int newVal;
         Tile.conditions condition;
-        if(t1.getCondition()==t2.getCondition())
-            condition = t1.getCondition();
-        else
-            condition= Tile.conditions.NONE;
-        grid[x][y] = new Tile(Integer.toString(newVal), x, y, condition);
-        grid[t1.getX()][t1.getY()] = null;
 
-        score += newVal;
+
+        for(int i = 0; i < tiles.size();i++){
+            t1 = tiles.get(i);
+            if(i+1 < tiles.size())
+                t2 = tiles.get(i+1);
+
+            if(t2 != null && t1.getValue().equals(t2.getValue())){//if combining
+                newVal = Integer.parseInt(t2.getValue())*2;
+                Log.i("Tiles Combined", "new tile val: " + newVal);
+                if(t1.getCondition()==t2.getCondition())
+                    condition = t1.getCondition();
+                else
+                    condition= Tile.conditions.NONE;
+
+                newTiles.add(new Tile(Integer.toString(newVal), condition));
+                i++;
+                score+=newVal;
+            }
+            else {
+                Log.i("Tiles Combined", "Tiles not combined, but added");
+                newTiles.add(t1);
+            }
+
+            t2=null;
+        }
+
+        return newTiles;
     }
 
     public int[][] getGrid(){
@@ -115,6 +158,10 @@ public class Grid {
             }
         }
         return vals;
+    }
+
+    public int getScore(){
+        return score;
     }
 
     public void newTile() {
@@ -138,6 +185,17 @@ public class Grid {
         else
             condition = Tile.conditions.NONE;
 
-        grid[x][y] = new Tile(value, x, y, condition);
+        grid[x][y] = new Tile(value, condition);
+    }
+
+    public void reset(){
+        for(int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                grid[i][j]=null;
+            }
+        }
+        score = 0;
+        newTile();
+        newTile();
     }
 }
